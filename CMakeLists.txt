@@ -4,7 +4,6 @@ project(SoulKnightClone)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-set(SFML_DIR "C:/SFML-3.1.0/lib/cmake/SFML")
 find_package(SFML 3 REQUIRED COMPONENTS Graphics Audio)
 
 add_executable(SoulKnightClone
@@ -28,10 +27,12 @@ add_executable(SoulKnightClone
 target_include_directories(SoulKnightClone PRIVATE ${SFML_INCLUDE_DIR})
 target_link_libraries(SoulKnightClone PRIVATE SFML::Graphics SFML::Audio)
 
-add_custom_command(TARGET SoulKnightClone POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        "${SFML_DIR}/../../../bin/sfml-graphics-3.dll"
-        "${SFML_DIR}/../../../bin/sfml-window-3.dll"
-        "${SFML_DIR}/../../../bin/sfml-system-3.dll"
-        "${SFML_DIR}/../../../bin/sfml-audio-3.dll"
-        $<TARGET_FILE_DIR:SoulKnightClone>)
+if(WIN32)
+    add_custom_command(TARGET SoulKnightClone POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            "${SFML_DIR}/../../../bin/sfml-graphics-3.dll"
+            "${SFML_DIR}/../../../bin/sfml-window-3.dll"
+            "${SFML_DIR}/../../../bin/sfml-system-3.dll"
+            "${SFML_DIR}/../../../bin/sfml-audio-3.dll"
+            $<TARGET_FILE_DIR:SoulKnightClone>)
+endif()
